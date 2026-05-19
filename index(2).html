@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Natasha Litherland</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --pink:  #e8185c;
+      --navy:  #0f1628;
+      --mid:   #3d4a6b;
+      --light: #7a8aaa;
+      --faint: #e4e8f2;
+      --white: #ffffff;
+      --bg:    #f6f7fb;
+      --sans:  'Figtree', system-ui, sans-serif;
+      --mono:  'DM Mono', monospace;
+    }
+
+    html { font-size: 16px; scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--navy);
+      font-family: var(--sans);
+      font-weight: 400;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; }
+
+    /* NAV */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(249,249,252,0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--faint);
+      padding: 0 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 52px;
+    }
+    .nav-name {
+      font-family: var(--mono); font-size: 0.75rem;
+      font-weight: 500; letter-spacing: 0.08em;
+      color: var(--pink); text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 1.75rem; list-style: none; }
+    .nav-links a {
+      font-size: 0.78rem; font-weight: 500; color: var(--mid);
+      text-decoration: none; letter-spacing: 0.04em; transition: color 0.15s;
+    }
+    .nav-links a:hover { color: var(--pink); }
+
+    /* PAGE */
+    .page { max-width: 1100px; margin: 0 auto; padding: 0 2rem 6rem; }
+
+    /* ABOUT */
+    .about { padding: 4.5rem 0 3.5rem; max-width: 720px; animation: fadeup 0.5s ease both; }
+    .about-bio { font-size: 0.95rem; color: var(--mid); line-height: 1.8; margin-bottom: 1rem; }
+    .about-bio strong { color: var(--navy); font-weight: 600; }
+    .about-bio a {
+      color: var(--navy); text-decoration: underline;
+      text-decoration-color: var(--pink); text-underline-offset: 3px;
+    }
+    .about-note {
+      font-size: 0.88rem; color: var(--mid);
+      margin-top: 1.5rem; line-height: 1.75;
+    }
+    .about-links { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 2rem; }
+    .pill {
+      font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.06em;
+      padding: 0.35rem 0.85rem; border-radius: 100px; text-decoration: none;
+      border: 1.5px solid var(--faint); color: var(--mid); transition: border-color 0.15s, color 0.15s;
+    }
+    .pill:hover { border-color: var(--pink); color: var(--pink); }
+
+    /* FILTER */
+    .filter-bar {
+      padding: 1.25rem 0; border-top: 1px solid var(--faint);
+      border-bottom: 1px solid var(--faint); margin-bottom: 2.5rem;
+      display: flex; align-items: center; flex-wrap: wrap; gap: 0.5rem;
+    }
+    .filter-label {
+      font-family: var(--mono); font-size: 0.65rem;
+      letter-spacing: 0.1em; color: var(--light);
+      margin-right: 0.25rem; text-transform: uppercase;
+    }
+    .tag-btn {
+      font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.05em;
+      padding: 0.28rem 0.72rem; border-radius: 100px;
+      border: 1.5px solid var(--faint); background: var(--white);
+      color: var(--mid); cursor: pointer; transition: all 0.15s;
+    }
+    .tag-btn:hover { border-color: var(--pink); color: var(--pink); }
+    .tag-btn.active { background: var(--pink); border-color: var(--pink); color: var(--white); }
+
+    /* GRID */
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 3.5rem; }
+    .grid-row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0 3.5rem; margin-top: 3rem; }
+
+    .col-title {
+      font-family: var(--mono); font-size: 0.68rem;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--pink); margin-bottom: 1.5rem;
+      padding-bottom: 0.6rem; border-bottom: 2px solid var(--pink);
+    }
+
+    /* ENTRY */
+    .entry { padding: 1.2rem 0; border-bottom: 1px solid var(--faint); }
+    .entry.hidden { display: none; }
+    .entry-meta { display: flex; align-items: center; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 0.4rem; }
+    .entry-year { font-family: var(--mono); font-size: 0.63rem; color: var(--light); letter-spacing: 0.06em; }
+
+    .entry-tag {
+      font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.05em;
+      padding: 0.12rem 0.45rem; border-radius: 100px; border: 1px solid;
+    }
+    .tag-ai-ethics { color: #c0187c; border-color: #f0c0dc; background: #fff0f7; }
+    .tag-education { color: #1860c0; border-color: #b8d4f8; background: #f0f6ff; }
+    .tag-climate   { color: #187a40; border-color: #b8e8cc; background: #f0fff5; }
+    .tag-hci       { color: #8040c0; border-color: #d4b8f0; background: #f8f0ff; }
+    .tag-policy    { color: #c07018; border-color: #f0d8b0; background: #fffaf0; }
+    .tag-design    { color: #c04018; border-color: #f0c8b8; background: #fff4f0; }
+    .tag-youth     { color: #186070; border-color: #b8dce8; background: #f0faff; }
+
+    .status-badge {
+      font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.06em;
+      padding: 0.12rem 0.45rem; border-radius: 3px;
+      background: transparent; color: var(--light);
+      border: 1px dashed var(--light);
+    }
+
+    .entry h3 { font-size: 0.92rem; font-weight: 600; line-height: 1.4; margin-bottom: 0.3rem; }
+    .entry h3 a { text-decoration: none; }
+    .entry h3 a:hover { color: var(--pink); }
+    .entry p { font-size: 0.83rem; color: var(--mid); line-height: 1.6; }
+    .entry-venue { font-size: 0.76rem; color: var(--light); font-style: italic; margin-top: 0.25rem; }
+
+    .sub-section-label {
+      font-family: var(--mono); font-size: 0.63rem; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--light);
+      margin: 2rem 0 1rem; padding-top: 1.5rem;
+      border-top: 1px dashed var(--faint);
+    }
+
+    /* FOOTER */
+    footer {
+      margin-top: 5rem; padding-top: 2rem;
+      border-top: 1px solid var(--faint);
+      font-family: var(--mono); font-size: 0.63rem;
+      color: var(--light); letter-spacing: 0.06em;
+      display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;
+    }
+
+    @keyframes fadeup {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ABOUT PHOTO LAYOUT */
+    .about-inner { display: flex; gap: 2.5rem; align-items: flex-start; }
+    .about-photo { flex-shrink: 0; }
+    .about-photo img {
+      width: 140px; height: 140px; border-radius: 50%;
+      object-fit: cover; display: block;
+    }
+    .photo-placeholder {
+      width: 140px; height: 140px; border-radius: 50%;
+      background: var(--faint); border: 2px dashed var(--light);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--mono); font-size: 0.6rem; color: var(--light);
+      letter-spacing: 0.05em; text-align: center; padding: 1rem;
+    }
+    .about-text { flex: 1; }
+
+        @media (max-width: 680px) {
+      .about-inner { flex-direction: column; }
+      .about-photo, .about-photo img, .photo-placeholder { width: 100px; height: 100px; }
+      .grid { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+      .col-title { margin-top: 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-name" href="#">natasha litherland</a>
+  <ul class="nav-links">
+    <li><a href="#about">about</a></li>
+    <li><a href="#work">work</a></li>
+    <li><a href="mailto:litherland@cy-tech.fr">contact</a></li>
+  </ul>
+</nav>
+
+<div class="page">
+
+  <!-- ABOUT -->
+  <section class="about" id="about">
+    <div class="about-inner">
+
+      <div class="about-photo">
+        <img src="photo.jpg" alt="Natasha Litherland" id="profile-photo"
+          onerror="this.style.display='none';document.getElementById('photo-placeholder').style.display='flex';">
+        <div id="photo-placeholder" class="photo-placeholder">
+          <span>photo coming soon</span>
+        </div>
+      </div>
+
+      <div class="about-text">
+        <p class="about-bio">Hello! I'm a Master's student in Computer Engineering and Global Design, currently a predoctoral
+        visiting researcher at the <a href="https://tide.upf.edu" target="_blank">TIDE Lab</a>
+        (Universitat Pompeu Fabra), where I'm looking into the societal impacts of genAI in education —
+        specifically the impacts of chatbot roles on output overreliance in a computer-supported
+        collaborative learning environment.</p>
+
+        <p class="about-bio">
+        The rest of my work tends to circle the same question from different angles: how do
+        technologies that claim to serve people actually affect them? I've looked at this through
+        animal welfare (<a href="#" target="_blank">Sentient Futures</a> fellowship), democratic
+        participation (<a href="#" target="_blank">Sunflower</a>, a civic tech platform I co-founded),
+        climate information access (<a href="https://www.climatecardinals.org" target="_blank">Climate Cardinals</a>,
+        where I was Deputy Director of Education), and AI governance more broadly
+        (<a href="https://www.chathamhouse.org/programme/common-futures-conversations" target="_blank">Chatham House CFC</a>,
+        AFFINE, AISPP).
+        </p>
+
+        <p class="about-bio">
+        I work in French and English, occasionally in Spanish, and have the right to work in the EU and UK.
+        </p>
+
+        <div class="about-links">
+          <a class="pill" href="https://www.linkedin.com/in/natashalitherland" target="_blank">↗ linkedin</a>
+          <a class="pill" href="https://github.com/" target="_blank">↗ github</a>
+          <a class="pill" href="mailto:natashalitherlandwork@gmail.com">✉ email</a>
+          <a class="pill" href="#" target="_blank">↗ cv</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- WORK -->
+  <section id="work">
+
+    <div class="filter-bar">
+      <span class="filter-label">filter ↘</span>
+      <button class="tag-btn active" data-tag="all">all</button>
+      <button class="tag-btn" data-tag="ai-ethics">AI ethics</button>
+      <button class="tag-btn" data-tag="education">education</button>
+      <button class="tag-btn" data-tag="hci">HCI</button>
+      <button class="tag-btn" data-tag="climate">climate</button>
+      <button class="tag-btn" data-tag="policy">policy</button>
+      <button class="tag-btn" data-tag="design">design</button>
+      <button class="tag-btn" data-tag="youth">youth &amp; civic</button>
+    </div>
+
+    <div class="grid">
+
+      <!-- LEFT: Research & Policy -->
+      <div>
+        <div class="col-title">Research &amp; Policy</div>
+
+        <div class="entry" data-tags="hci education ai-ethics">
+          <div class="entry-meta">
+            <span class="entry-year">2026 — ongoing</span>
+            <span class="entry-tag tag-hci">HCI</span>
+            <span class="entry-tag tag-education">education</span>
+            <span class="entry-tag tag-ai-ethics">AI ethics</span>
+            <span class="status-badge">in progress</span>
+          </div>
+          <h3>GenAI chatbot roles, overtrust &amp; learning gains</h3>
+          <p>Does a "peer interrogator" chatbot — one that responds with Socratic questions rather
+          than direct answers — reduce blind copy-paste behaviour and improve learning outcomes?
+          Wizard-of-Oz pilot study within PyramidApp (CSCL).</p>
+          <div class="entry-venue">
+            <span class="venue-role">Predoctoral Visiting Researcher</span> ·
+            <span class="venue-org">TIDE Lab, Universitat Pompeu Fabra</span> ·
+            <span class="venue-collab">supervised by Prof. Davinia Hernández-Leo</span>
+          </div>
+        </div>
+
+        <div class="entry" data-tags="ai-ethics policy">
+          <div class="entry-meta">
+            <span class="entry-year">2026 — ongoing</span>
+            <span class="entry-tag tag-ai-ethics">AI ethics</span>
+            <span class="entry-tag tag-policy">policy</span>
+          </div>
+          <h3>AI &amp; animal welfare: governance gaps in precision livestock farming</h3>
+          <p>Exploring the structural risk of welfare-washing — AI systems marketed as welfare
+          improvements that optimise productivity while leaving conditions of exploitation intact.
+          Part of the AIxAnimals research programme.</p>
+          <div class="entry-venue">
+            <span class="venue-role">Fellow</span> ·
+            <span class="venue-org">Sentient Futures</span>
+          </div>
+        </div>
+
+        <div class="entry" data-tags="ai-ethics climate policy">
+          <div class="entry-meta">
+            <span class="entry-year">2026 — ongoing</span>
+            <span class="entry-tag tag-ai-ethics">AI ethics</span>
+            <span class="entry-tag tag-climate">climate</span>
+            <span class="entry-tag tag-policy">policy</span>
+            <span class="status-badge">in progress</span>
+          </div>
+          <h3>AI governance at the climate intersection</h3>
+          <p>Exploring governance frameworks where AI deployment and climate systems intersect.</p>
+          <div class="entry-venue">
+            <span class="venue-role">Fellow, Climate &amp; AI cohort (Round 3)</span> ·
+            <span class="venue-org">AISPP · AFFINE</span>
+          </div>
+        </div>
+
+        <div class="entry" data-tags="hci design ai-ethics">
+          <div class="entry-meta">
+            <span class="entry-year">2025 — ongoing</span>
+            <span class="entry-tag tag-hci">HCI</span>
+            <span class="entry-tag tag-design">design</span>
+            <span class="status-badge">in progress</span>
+          </div>
+          <h3>How product designers integrate AI into their practice</h3>
+          <p>Qualitative interview study on what professional designers delegate, resist, and
+          renegotiate as generative AI enters their workflows — and what that reveals about
+          authorship, creative agency, and professional identity.</p>
+          <div class="entry-venue">
+            <span class="venue-role">Independent research</span> ·
+            <span class="venue-collab">target: journal publication</span>
+          </div>
+        </div>
+
+        <div class="entry" data-tags="youth policy">
+          <div class="entry-meta">
+            <span class="entry-year">2025 — ongoing</span>
+            <span class="entry-tag tag-youth">civic tech</span>
+            <span class="entry-tag tag-policy">policy</span>
+          </div>
+          <h3>Sunflower — open data &amp; democratic engagement</h3>
+          <p>Civic tech platform mitigating misinformation through simplified open data access.
+          Backed by People Powered and Coglobal (Spring 2026).
+          Podium at the Council of Europe's 2025 hackathon (250+ teams).</p>
+          <div class="entry-venue">
+            <span class="venue-role">Co-founder</span> ·
+            <span class="venue-org">Sunflower</span> ·
+            <span class="venue-collab">launching 2026</span>
+          </div>
+        </div>
+
+        <div class="entry" data-tags="youth policy climate">
+          <div class="entry-meta">
+            <span class="entry-year">2025 — ongoing</span>
+            <span class="entry-tag tag-youth">youth</span>
+            <span class="entry-tag tag-policy">policy</span>
+            <span class="entry-tag tag-climate">climate</span>
+          </div>
+          <h3>UNESCO Global Youth Community — Steering Committee</h3>
+          <p>Sole French delegate to the 14th Youth Forum (Samarkand, theme: Climate Action &amp;
+          Social Impacts). Co-authored recommendations; Follow-up Action Group member.</p>
+          <div class="entry-venue">
+            <span class="venue-role">Steering Committee Member</span> ·
+            <span class="venue-org">UNESCO GYC</span>
+          </div>
+        </div>
+
+        <div class="entry" data-tags="climate youth">
+          <div class="entry-meta">
+            <span class="entry-year">2025–2026</span>
+            <span class="entry-tag tag-climate">climate</span>
+            <span class="entry-tag tag-youth">youth</span>
+          </div>
+          <h3>Climate Ambassadors Program — project management</h3>
+          <p>Led the program (launched with The Nature Conservancy, 80+ countries) and Ptera,
+          a multilingual newsletter reaching 11,000+ subscribers across 86 countries.
+          Focus on media literacy and linguistic access to climate information.</p>
+          <div class="entry-venue">
+            <span class="venue-role">Deputy Director of Education</span> ·
+            <span class="venue-org">Climate Cardinals</span> ·
+            <span class="venue-collab">with The Nature Conservancy</span>
+          </div>
+        </div>
+
+      </div><!-- /left col -->
+
+      <!-- RIGHT: Writing & Design -->
+      <div>
+        <div class="col-title">Writing &amp; Design</div>
+
+        <div class="entry" data-tags="ai-ethics policy">
+          <div class="entry-meta">
+            <span class="entry-year">forthcoming</span>
+            <span class="entry-tag tag-ai-ethics">AI ethics</span>
+            <span class="entry-tag tag-policy">policy</span>
+            <span class="status-badge">forthcoming</span>
+          </div>
+          <h3>When AI "helps" animals: the risk of welfare-washing in precision livestock farming</h3>
+          <p>On how AI tools marketed as welfare improvements can entrench systems of exploitation —
+          and what meaningful governance would actually require.</p>
+          <div class="entry-venue">
+            <span class="venue-org">Chatham House Common Futures Conversations</span>
+          </div>
+        </div>
+
+        <div class="entry" data-tags="education ai-ethics policy">
+          <div class="entry-meta">
+            <span class="entry-year">forthcoming</span>
+            <span class="entry-tag tag-education">education</span>
+            <span class="entry-tag tag-ai-ethics">AI ethics</span>
+            <span class="status-badge">forthcoming</span>
+          </div>
+          <h3>Teaching students to think, not just to prompt: the global AI literacy gap</h3>
+          <p>China mandates AI across all school tiers. The US has an 84%/6% problem (students using AI
+          vs. teachers with clear policies). Almost every national framework is missing the point
+          about scepticism.</p>
+          <div class="entry-venue">
+            <span class="venue-org">Chatham House Common Futures Conversations</span>
+          </div>
+        </div>
+
+        <div class="entry" data-tags="climate youth policy">
+          <div class="entry-meta">
+            <span class="entry-year">2025</span>
+            <span class="entry-tag tag-climate">climate</span>
+            <span class="entry-tag tag-youth">youth</span>
+            <span class="entry-tag tag-policy">policy</span>
+          </div>
+          <h3><a href="#" target="_blank">From climate crisis to climate resilience in Europe: statement of conference outcomes ↗</a></h3>
+          <div class="entry-venue">
+            <span class="venue-org">Chatham House</span>
+          </div>
+        </div>
+
+        <div class="entry" data-tags="youth policy">
+          <div class="entry-meta">
+            <span class="entry-year">2025</span>
+            <span class="entry-tag tag-youth">youth</span>
+            <span class="entry-tag tag-policy">policy</span>
+          </div>
+          <h3><a href="#" target="_blank">Retour sur le 14e Forum des jeunes de l'UNESCO ↗</a></h3>
+          <p>Report and co-authored conclusions from the 14th UNESCO Youth Forum.</p>
+          <div class="entry-venue">
+            <span class="venue-org">UNESCO</span>
+          </div>
+        </div>
+
+        <div class="entry" data-tags="design policy">
+          <div class="entry-meta">
+            <span class="entry-year">2025</span>
+            <span class="entry-tag tag-design">design</span>
+            <span class="entry-tag tag-policy">policy</span>
+          </div>
+          <h3>Design fiction workshops — Bercy+</h3>
+          <p>Led speculative design workshops for senior French civil servants, imagining futures
+          at the intersection of technology and public administration.</p>
+          <div class="entry-venue">
+            <span class="venue-role">Workshop Facilitator</span> ·
+            <span class="venue-org">IGPDE</span>
+          </div>
+        </div>
+
+        <div class="entry" data-tags="design">
+          <div class="entry-meta">
+            <span class="entry-year">2024</span>
+            <span class="entry-tag tag-design">design</span>
+          </div>
+          <h3>Prix Carnot trophies — material design</h3>
+          <p>Designed and hand-crafted five solid brass trophies from initial sketches
+          through to final metal finishing.</p>
+          <div class="entry-venue">
+            <span class="venue-role">Product Designer</span> ·
+            <span class="venue-org">Le Réseau des Carnot</span>
+          </div>
+        </div>
+
+        <div class="entry" data-tags="design youth">
+          <div class="entry-meta">
+            <span class="entry-year">2023–2024</span>
+            <span class="entry-tag tag-design">design</span>
+            <span class="entry-tag tag-youth">civic</span>
+          </div>
+          <h3>Visual design &amp; UX</h3>
+          <p>UX testing for pass Culture (4.7M+ users); co-developed a festival on European identity
+          with La Gaîté Lyrique; created infographics for Ptera (11K+ subscribers, 86 countries).</p>
+          <div class="entry-venue">
+            <span class="venue-role">Ambassador &amp; Graphic Designer</span> ·
+            <span class="venue-org">pass Culture · Climate Cardinals</span> ·
+            <span class="venue-collab">with La Gaîté Lyrique</span>
+          </div>
+        </div>
+
+      </div><!-- /right col -->
+
+    </div><!-- /grid row 1 -->
+
+    <!-- GRID ROW 2: Media & Talks -->
+    <div class="grid-row2">
+
+      <!-- LEFT: Media -->
+      <div>
+        <div class="col-title">Media</div>
+
+        <div class="entry" data-tags="youth policy">
+          <div class="entry-meta">
+            <span class="entry-year">2024</span>
+            <span class="entry-tag tag-youth">youth</span>
+          </div>
+          <h3>University Unplugged — podcast on diversity &amp; inclusion</h3>
+          <p>Co-launched an English-language podcast; shaped content strategy and branding.</p>
+          <div class="entry-venue">
+            <span class="venue-role">Vice President</span> ·
+            <span class="venue-org">The Mosaic Society, CY Cergy Paris Université</span>
+          </div>
+        </div>
+
+        <div class="entry" data-tags="youth policy climate">
+          <div class="entry-meta">
+            <span class="entry-year">2024–2026</span>
+            <span class="entry-tag tag-climate">climate</span>
+            <span class="entry-tag tag-youth">youth</span>
+          </div>
+          <h3>Ptera newsletter — infographics &amp; visual storytelling</h3>
+          <p>Multilingual visual content for 11,000+ subscribers across 86 countries.
+          Focus on making climate information accessible across linguistic and cultural barriers.</p>
+          <div class="entry-venue">
+            <span class="venue-role">Graphic Designer → Deputy Director</span> ·
+            <span class="venue-org">Climate Cardinals</span>
+          </div>
+        </div>
+
+      </div><!-- /media col -->
+
+      <!-- RIGHT: Talks & Events -->
+      <div>
+        <div class="col-title">Talks &amp; Events</div>
+
+        <div class="entry" data-tags="youth policy">
+          <div class="entry-meta">
+            <span class="entry-year">Dec 2025</span>
+            <span class="entry-tag tag-youth">youth</span>
+            <span class="entry-tag tag-policy">policy</span>
+          </div>
+          <h3>Panelist — "Advancing Human Rights: Lessons &amp; Perspectives at UN80"</h3>
+          <div class="entry-venue">
+            <span class="venue-org">UNESCO Headquarters, Paris</span>
+          </div>
+        </div>
+
+        <div class="entry" data-tags="youth">
+          <div class="entry-meta">
+            <span class="entry-year">Nov 2024</span>
+            <span class="entry-tag tag-youth">youth</span>
+          </div>
+          <h3>Master of Ceremonies — EUTOPIA Week opening ceremony</h3>
+          <p>Hosted the flagship international event representing 40,000 students of the CY Alliance,
+          attended by ambassadors and institutional leaders.</p>
+          <div class="entry-venue">
+            <span class="venue-role">MC</span> ·
+            <span class="venue-org">EUTOPIA European University Alliance, Cergy</span>
+          </div>
+        </div>
+
+        <div class="entry" data-tags="youth policy">
+          <div class="entry-meta">
+            <span class="entry-year">2025</span>
+            <span class="entry-tag tag-youth">youth</span>
+            <span class="entry-tag tag-policy">policy</span>
+          </div>
+          <h3>Delegate — 14th UNESCO Youth Forum</h3>
+          <p>Sole French delegate under the theme "Climate Action &amp; Social Impacts,
+          Particularly for Young People." Co-authored the subsequent recommendations.</p>
+          <div class="entry-venue">
+            <span class="venue-org">UNESCO, Samarkand, Uzbekistan</span>
+          </div>
+        </div>
+
+        <div class="entry" data-tags="design">
+          <div class="entry-meta">
+            <span class="entry-year">2023</span>
+            <span class="entry-tag tag-design">design</span>
+          </div>
+          <h3>Jury member — Prix Cinéma des Étudiants, Cannes</h3>
+          <p>Selected by France Culture to evaluate shortlisted films for the student jury award.</p>
+          <div class="entry-venue">
+            <span class="venue-org">Festival de Cannes · France Culture</span>
+          </div>
+        </div>
+
+      </div><!-- /talks col -->
+
+    </div><!-- /grid row 2 -->
+  </section>
+
+  <footer>
+    <span>natasha litherland · updated may 2026</span>
+    <span style="width:100%;margin-top:0.4rem;">if you're looking for the natasha litherland who works between tech and design as a 3D environment artist — you're on the wrong website! :) her work is at <a href="#" target="_blank" style="color:var(--light);text-decoration:underline;text-underline-offset:3px;">natashalitherland.com</a>.</span>
+  </footer>
+
+</div>
+
+<script>
+  document.querySelectorAll('.tag-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const tag = btn.dataset.tag;
+      document.querySelectorAll('.tag-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('.entry').forEach(entry => {
+        const tags = (entry.dataset.tags || '').split(' ');
+        entry.classList.toggle('hidden', tag !== 'all' && !tags.includes(tag));
+      });
+    });
+  });
+</script>
+
+</body>
+</html>
