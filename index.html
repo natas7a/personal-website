@@ -177,18 +177,11 @@
       width: 140px; height: 140px; border-radius: 50%;
       object-fit: cover; display: block;
     }
-    .photo-placeholder {
-      width: 140px; height: 140px; border-radius: 50%;
-      background: var(--faint); border: 2px dashed var(--light);
-      display: flex; align-items: center; justify-content: center;
-      font-family: var(--mono); font-size: 0.6rem; color: var(--light);
-      letter-spacing: 0.05em; text-align: center; padding: 1rem;
-    }
     .about-text { flex: 1; }
 
         @media (max-width: 680px) {
       .about-inner { flex-direction: column; }
-      .about-photo, .about-photo img, .photo-placeholder { width: 100px; height: 100px; }
+      .about-photo, .about-photo img { width: 100px; height: 100px; }
       .grid { grid-template-columns: 1fr; }
       .nav-links { display: none; }
       .col-title { margin-top: 2rem; }
@@ -213,11 +206,7 @@
     <div class="about-inner">
 
       <div class="about-photo">
-        <img src="pfp.png" alt="Natasha Litherland" id="profile-photo"
-          onerror="this.style.display='none';document.getElementById('photo-placeholder').style.display='flex';">
-        <div id="photo-placeholder" class="photo-placeholder">
-          <span>photo coming soon</span>
-        </div>
+        <img src="pfp.png" alt="Natasha Litherland" id="profile-photo">
       </div>
 
       <div class="about-text">
@@ -248,6 +237,7 @@
           <a class="pill" href="https://medium.com/@natlith" target="_blank">↗ medium</a>
           <a class="pill" href="mailto:natashalitherlandwork@gmail.com">✉ email</a>
           <a class="pill" href="https://orcid.org/0009-0009-7595-9025" target="_blank">↗ orcid</a>
+          <a class="pill" href="https://uncertainty101.substack.com/" target="_blank">↗ blog</a>
           <a class="pill feedback-pill" href="https://forms.gle/placeholder" target="_blank" id="feedback-btn">✏ leave feedback</a>
         </div>
       </div>
